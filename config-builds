@@ -6,17 +6,13 @@ clang++ \
     --std=c++20 \
     -D_LIBCPP_HAS_NO_THREADS \
     -O3 \
-    -fvisibility=hidden -fdeclspec \
     -I/usr/lib/llvm-13/include/c++/v1/ \
     -I/usr/include \
     -I/usr/include/x86_64-linux-gnu/ \
     -Ilibs/memory/include/ \
     -Wl,--no-entry \
+    -Wl,--export=add \
     -Wl,--lto-O3 \
-    -Wl,--export-all \
     -Wl,-z,stack-size=$[8 * 1024 * 1024] \
     -o out.wasm \
-    test1.cpp
-
-    #-Wl,--export-all \
-     #-fuse-ld=wasm-ld-13 \
+    new.cpp memcpy.cpp test1.cpp
