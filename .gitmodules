@@ -1,0 +1,3 @@
+[submodule "libs/memory"]
+	path = libs/memory
+	url = git@github.com:Felspar/memory.git
