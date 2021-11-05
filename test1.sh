@@ -14,5 +14,5 @@ clang++ \
     -Wl,--export=add \
     -Wl,--lto-O3 \
     -Wl,-z,stack-size=$[8 * 1024 * 1024] \
-    -o out.wasm \
+    -o test1.wasm \
     new.cpp memcpy.cpp test1.cpp
