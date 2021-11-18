@@ -10,10 +10,30 @@ int abs(int n) {
 }
 
 
+double cos(double const r) {
+    return 1.0;
+}
+
+
+double exp(double const n) {
+    return 0.0;
+}
+
+
+double floor(double const v) {
+    return static_cast<int>(v);
+}
+
+
 double fabs(double d) {
     if (d < 0.0) {
         return -d;
     } else {
         return d;
     }
+}
+
+
+double sqrt(double const a) {
+    return 1.0;
 }
