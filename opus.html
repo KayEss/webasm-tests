@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<script>
+  var webasm;
+  async function init() {
+    const { instance } = await WebAssembly.instantiateStreaming(
+      fetch("opus.wasm")
+    );
+    instance.exports.__wasm_call_ctors();
+
+    webasm = instance;
+    console.log(instance);
+  }
+  init();
+</script>
+</html>
