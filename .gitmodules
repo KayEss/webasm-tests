@@ -1,3 +1,6 @@
 [submodule "libs/memory"]
 	path = libs/memory
 	url = git@github.com:Felspar/memory.git
+[submodule "libs/opus"]
+	path = libs/opus
+	url = git@github.com:xiph/opus.git
