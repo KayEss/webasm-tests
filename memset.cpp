@@ -6,4 +6,5 @@ extern "C" void* memset(void * const dest, int const ch, std::size_t count) {
     while (count--) {
         *d++ = ch;
     }
+    return dest;
 }
