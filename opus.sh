@@ -74,6 +74,8 @@ do {
         -emit-llvm -c \
         -DOPUS_BUILD=1 \
         -DUSE_ALLOCA=1 \
+        -DHAVE_LRINT \
+        -DHAVE_LRINTF \
         -O3 \
         -I/usr/lib/llvm-13/include/c++/v1/ \
         -I/usr/include \
