@@ -144,7 +144,10 @@ clang++ \
     -Ilibs/opus/include \
     -Wl,--no-entry \
     -Wl,--export=__wasm_call_ctors \
+    -Wl,--export=malloc \
+    -Wl,--export=free \
     -Wl,--export=create_decoder \
+    -Wl,--export=decode_float \
     -Wl,--export=free_decoder \
     -Wl,--lto-O3 \
     -Wl,-z,stack-size=$[8 * 1024 * 1024] \

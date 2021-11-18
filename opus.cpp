@@ -13,6 +13,8 @@ namespace {
         }
         ~decoder() {
         }
+
+        operator OpusDecoder*() const { return dec; }
     private:
         OpusDecoder *dec = nullptr;
     };
@@ -26,6 +28,11 @@ extern "C" int create_decoder() {
     auto handle = ++g_next_handle;
     g_decoders[handle] = std::make_unique<decoder>();
     return handle;
+}
+
+
+extern "C" int decode_float(int decoder, unsigned char const *packet, std::size_t packet_length, float*into, std::size_t length, int fec) {
+    return opus_decode_float(*g_decoders[decoder], packet, packet_length, into, length, fec);
 }
 
 
