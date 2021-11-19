@@ -1,4 +1,8 @@
 #include  <math.h>
+extern "C" {
+#include <platform.h>
+#include <softfloat.h>
+}
 
 
 int abs(int n) {
@@ -35,5 +39,5 @@ double fabs(double d) {
 
 
 double sqrt(double const a) {
-    return 1.0;
+    return f64_sqrt(a);
 }

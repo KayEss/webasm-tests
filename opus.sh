@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
+./libs/SoftFloat.sh
 ./stdlib/stdlib.sh
 
 mkdir -p celt silk src
@@ -108,9 +109,27 @@ clang++ \
     -Wl,--export=create_decoder \
     -Wl,--export=decode_float \
     -Wl,--export=free_decoder \
+    -Wl,--export=sqrt \
     -Wl,--lto-O3 \
     -Wl,-z,stack-size=$[8 * 1024 * 1024] \
-    stdlib/atexit.bc stdlib/malloc.bc stdlib/maths.bc stdlib/memcpy.bc stdlib/memmove.bc stdlib/memset.bc stdlib/new.bc \
+    libs/SoftFloat/source/8086/softfloat_raiseFlags.c.bc \
+    libs/SoftFloat/source/8086/s_propagateNaNF64UI.c.bc \
+    libs/SoftFloat/source/f64_sqrt.c.bc \
+    libs/SoftFloat/source/s_countLeadingZeros8.c.bc \
+    libs/SoftFloat/source/s_countLeadingZeros64.c.bc \
+    libs/SoftFloat/source/s_approxRecipSqrt_1Ks.c.bc \
+    libs/SoftFloat/source/s_approxRecipSqrt32_1.c.bc \
+    libs/SoftFloat/source/s_normSubnormalF64Sig.c.bc \
+    libs/SoftFloat/source/s_roundPackToF64.c.bc \
+    libs/SoftFloat/source/s_shiftRightJam64.c.bc \
+    libs/SoftFloat/source/softfloat_state.c.bc \
+    stdlib/atexit.cpp.bc \
+    stdlib/malloc.cpp.bc \
+    stdlib/maths.cpp.bc \
+    stdlib/memcpy.cpp.bc \
+    stdlib/memmove.cpp.bc \
+    stdlib/memset.cpp.bc \
+    stdlib/new.cpp.bc \
     $OPUS \
     ./opus.cpp \
     -o opus.wasm

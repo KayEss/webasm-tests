@@ -14,7 +14,9 @@ do {
         -I/usr/lib/llvm-13/include/c++/v1/ \
         -I/usr/include \
         -I/usr/include/x86_64-linux-gnu/ \
+        -I../libs/ \
+        -I../libs/SoftFloat/source/include \
         -I../libs/memory/include/ \
-        $FILE
+        $FILE -o $FILE.bc
 }
 done
