@@ -33,7 +33,35 @@ double cos(double const r) {
 
 
 double exp(double const n) {
-    return 0.0;
+    constexpr double e = 2.7182818284590;
+
+    int64_t nearest = n;
+    double error = n - nearest;
+    if (error < -0.5) {
+        nearest += 1;
+        error += 1;
+    } else if (error > 0.5) {
+        nearest -= 1;
+        error -= 1;
+    }
+
+    double en = 1.0;
+    if (nearest > 0) {
+        while (nearest--) {
+            en *= e;
+        }
+    } else {
+        while (nearest++) {
+            en /= e;
+        }
+    }
+
+    double const er = 1 + error + (error * error) / 2 +
+        (error * error * error) / 6 +
+        (error * error * error * error) / 24 +
+        (error * error * error * error * error) / 120;
+
+    return en * er;
 }
 
 
