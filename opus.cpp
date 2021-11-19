@@ -20,9 +20,7 @@ namespace {
         ~decoder() {
         }
 
-        operator OpusDecoder*() const { return dec; }
         opus_int32 err = {};
-    private:
         OpusDecoder *dec = nullptr;
     };
 
@@ -44,11 +42,7 @@ extern "C" opus_int32 decoder_error(int handle) {
 
 
 extern "C" int decode_float(int decoder, unsigned char const *packet, std::size_t packet_length, float*into, std::size_t length, int fec) {
-    std::size_t init{length};
-    while (init--) {
-        into[init] = init;
-    }
-    return opus_decode_float(*g_decoders[decoder], packet, packet_length, into, length, fec);
+    return opus_decode_float(g_decoders[decoder]->dec, packet, packet_length, into, length, fec);
 }
 
 
@@ -72,4 +66,7 @@ int main() {
     std::array<float, 960> output = {};
     std::cout << decode_float(dec, opus_packet.data(), opus_packet.size(), output.data(), output.size(), 0) << " " << decoder_error(dec) << std::endl;
     for (auto s : output) { std::cout << s << ' '; }
+    std::cout << std::endl;
+
+    return 0;
 }
