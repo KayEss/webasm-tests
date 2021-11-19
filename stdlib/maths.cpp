@@ -15,7 +15,20 @@ int abs(int n) {
 
 
 double cos(double const r) {
-    return 1.0;
+    /**
+     * Tailor series expansion
+     *
+     * cos x = 1 - x^2/2! + x^4/4! - x^6/6! + ...
+     */
+    unsigned k = 1;
+    double step = -r * r / 2.0, approx = 1.0, best = approx + step;
+    while (best != approx) {
+        approx = best;
+        ++k;
+        step = (-r * r * step) / (((2 * k) - 1) * (2 * k));
+        best = approx + step;
+    }
+    return best;
 }
 
 

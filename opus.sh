@@ -110,6 +110,8 @@ clang++ \
     -Wl,--export=decode_float \
     -Wl,--export=free_decoder \
     -Wl,--export=sqrt \
+    -Wl,--export=cos \
+    -Wl,--export=exp \
     -Wl,--lto-O3 \
     -Wl,-z,stack-size=$[8 * 1024 * 1024] \
     libs/SoftFloat/source/8086/softfloat_raiseFlags.c.bc \
