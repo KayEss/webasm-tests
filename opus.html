@@ -6,6 +6,7 @@
         const { instance } = await WebAssembly.instantiateStreaming(
         fetch("opus.wasm")
         );
+        instance.exports.memory.grow(1024);
         instance.exports.__wasm_call_ctors();
 
         webasm = instance;
@@ -33,9 +34,9 @@
         let decoder = instance.exports.create_decoder();
         console.log("decoder", decoder, instance.exports.decoder_error(decoder));
 
-        let out = instance.exports.malloc(960 * 4); // sizeof(float) == 4
-        console.log(out, instance.exports.decode_float(decoder, ptr, ptr.length, out, 960, 0));
-        const samples = new Float32Array(instance.exports.memory.buffer, out, 960);
+        let out = instance.exports.malloc(960 * 4 * 2); // sizeof(float) == 4
+        console.log(out, instance.exports.decode_float(decoder, ptr, ptr.length, out, 960 * 2, 0));
+        const samples = new Float32Array(instance.exports.memory.buffer, out, 960 * 2);
         console.log(samples);
     }
     init();
