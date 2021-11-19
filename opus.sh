@@ -107,6 +107,7 @@ clang++ \
     -Wl,--export=malloc \
     -Wl,--export=free \
     -Wl,--export=create_decoder \
+    -Wl,--export=decoder_error \
     -Wl,--export=decode_float \
     -Wl,--export=free_decoder \
     -Wl,--export=sqrt \

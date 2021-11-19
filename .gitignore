@@ -1,2 +1,4 @@
 *.bc
 *.wasm
+
+opus
