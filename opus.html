@@ -2,6 +2,7 @@
 <html>
 <script>
     var webasm;
+    var audioChunks = [];
     async function init() {
         const { instance } = await WebAssembly.instantiateStreaming(
         fetch("opus.wasm")
@@ -36,9 +37,20 @@
 
         let out = instance.exports.malloc(960 * 4 * 2); // sizeof(float) == 4
         console.log(out, instance.exports.decode_float(decoder, ptr, opus_packet.length, out, 960 * 2, 0));
-        const samples = new Float32Array(instance.exports.memory.buffer, out, 960 * 2);
+        const samples = new Float32Array(instance.exports.memory.buffer, out, 960);
+        audioChunks.push(samples)
         console.log(samples);
+    }
+
+    function create_download_file() {
+        var a = document.getElementById("a");
+        audioBlob = new Blob(audioChunks);
+        const audioUrl = URL.createObjectURL(audioBlob);
+        a.href = audioUrl
+        a.download = "test_opus";
     }
     init();
 </script>
+<a href="" id="a">click here to download your file</a>
+<button onclick="create_download_file()">Create file</button>
 </html>
