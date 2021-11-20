@@ -4,6 +4,7 @@
 <script>
     var webasm;
     var audioChunks = [];
+    var floatChucks = [];
     async function init() {
         const { instance } = await WebAssembly.instantiateStreaming(
         fetch("opus.wasm")
@@ -26,24 +27,23 @@
         console.log(exp(1), exp(3.5), exp(-6.2));
         console.log(Math.exp(1), Math.exp(3.5), Math.exp(-6.2));
 
-        let ptr = instance.exports.malloc(packets.length);
-        const mem = new Uint8Array(instance.exports.memory.buffer, ptr, packets.length);
-        mem.set(packets);
-        console.log(mem);
+
+
 
         let decoder = instance.exports.create_decoder();
+        let ptr = instance.exports.malloc(packets.length);
+        let out = instance.exports.malloc(960 * 4 * 2); // sizeof(float) == 4
         for (var i = 0; i< packets.length; i++) {
             console.log("packet : " + i + " length : " + packets[i].length)
-            let ptr = instance.exports.malloc(packets[i].length);
             const mem = new Uint8Array(instance.exports.memory.buffer, ptr, packets[i].length);
             mem.set(packets[i]);
 
             console.log("decoder", decoder, instance.exports.decoder_error(decoder));
-            let out = instance.exports.malloc(960 * 4 * 2); // sizeof(float) == 4
             console.log(out, instance.exports.decode_float(decoder, ptr, packets[i].length, out, 960 * 2, 0));
+
             const samples = new Float32Array(instance.exports.memory.buffer, out, 960);
-            audioChunks.push(samples)
-            console.log(samples);
+            audioChunks.push(samples.slice(0))
+            console.log(samples.slice(0));
         }
     }
 
@@ -54,8 +54,34 @@
         a.href = audioUrl
         a.download = "test_opus";
     }
+
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    var audioCtx = new AudioContext();
+    audioCtx.sampleRate = 48000
+
+    function play() {
+        var audioBuffer = [];
+        for (let x = 0; x< audioChunks.length; x++) {
+            audioBuffer = audioBuffer.concat(Array.from(audioChunks[x]))
+        }
+        let frameCount = audioBuffer.length / 2;
+        let myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
+        for (let channel = 0; channel < 2; channel++) {
+            let nowBuffering = myArrayBuffer.getChannelData(channel);
+            for (let i = 0; i < frameCount; i++) {
+                nowBuffering[i] = audioBuffer[i *2 + channel]
+            }
+        }
+
+        let source = audioCtx.createBufferSource();
+        source.buffer = myArrayBuffer;
+        source.connect(audioCtx.destination);
+        source.start();
+    }
+
     init();
 </script>
 <a href="" id="a">click here to download your file</a>
 <button onclick="create_download_file()">Create file</button>
+<button onclick="play()">PLAY SOUND</button>
 </html>
