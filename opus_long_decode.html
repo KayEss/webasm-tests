@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<script src="opus_input/1kHz.js"></script>
+<script>
+    var webasm;
+    var audioChunks = [];
+    async function init() {
+        const { instance } = await WebAssembly.instantiateStreaming(
+        fetch("opus.wasm")
+        );
+        instance.exports.memory.grow(100);
+        instance.exports.__wasm_call_ctors();
+
+        webasm = instance;
+        console.log(instance);
+
+        let sqrt = instance.exports.sqrt;
+        console.log(sqrt(2.0), sqrt(0.25), sqrt(0.01), sqrt(0.00001));
+        console.log(Math.sqrt(2.0), Math.sqrt(0.25), Math.sqrt(0.01), Math.sqrt(0.00001));
+
+        let cos = instance.exports.cos;
+        console.log(cos(0), cos(1), cos(3.14));
+        console.log(Math.cos(0), Math.cos(1), Math.cos(3.14));
+
+        let exp = instance.exports.exp;
+        console.log(exp(1), exp(3.5), exp(-6.2));
+        console.log(Math.exp(1), Math.exp(3.5), Math.exp(-6.2));
+
+        let ptr = instance.exports.malloc(packets.length);
+        const mem = new Uint8Array(instance.exports.memory.buffer, ptr, packets.length);
+        mem.set(packets);
+        console.log(mem);
+
+        let decoder = instance.exports.create_decoder();
+        for (var i = 0; i< packets.length; i++) {
+            console.log("packet : " + i + " length : " + packets[i].length)
+            let ptr = instance.exports.malloc(packets[i].length);
+            const mem = new Uint8Array(instance.exports.memory.buffer, ptr, packets[i].length);
+            mem.set(packets[i]);
+
+            console.log("decoder", decoder, instance.exports.decoder_error(decoder));
+            let out = instance.exports.malloc(960 * 4 * 2); // sizeof(float) == 4
+            console.log(out, instance.exports.decode_float(decoder, ptr, packets[i].length, out, 960 * 2, 0));
+            const samples = new Float32Array(instance.exports.memory.buffer, out, 960);
+            audioChunks.push(samples)
+            console.log(samples);
+        }
+    }
+
+    function create_download_file() {
+        var a = document.getElementById("a");
+        audioBlob = new Blob(audioChunks);
+        const audioUrl = URL.createObjectURL(audioBlob);
+        a.href = audioUrl
+        a.download = "test_opus";
+    }
+    init();
+</script>
+<a href="" id="a">click here to download your file</a>
+<button onclick="create_download_file()">Create file</button>
+</html>
