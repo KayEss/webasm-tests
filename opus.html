@@ -51,7 +51,8 @@
             diff = expected[index] - samples[index];
             error = diff * diff;
         }
-        console.log("Error", Math.sqrt(error / expected.length));
+        let rms = Math.sqrt(error / expected.length);
+        console.log("Error", rms, Math.log10(rms) * 10, "dB");
     }
 
     function create_download_file() {
