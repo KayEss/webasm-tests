@@ -146,9 +146,8 @@ for FILE in \
     silk/float/wrappers_FLP.c
 do {
     clang \
-        --target=wasm32 \
+        --target=wasm32 -emit-llvm -c \
         -nostdlib -ffreestanding -fno-exceptions \
-        -emit-llvm -c \
         -O3 \
         -DOPUS_BUILD=1 \
         -DUSE_ALLOCA=1 \
