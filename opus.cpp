@@ -64,9 +64,19 @@ int main() {
     auto dec = create_decoder();
 
     std::array<float, 960> output = {};
-    std::cout << decode_float(dec, opus_packet.data(), opus_packet.size(), output.data(), output.size(), 0) << " " << decoder_error(dec) << std::endl;
-    for (auto s : output) { std::cout << s << ' '; }
-    std::cout << std::endl;
+    std::cout << decode_float(dec, opus_packet.data(), opus_packet.size(), output.data(), output.size(), 0) << " " << decoder_error(dec) << '\n';
+
+
+    bool first = true;
+    std::cout << '[';
+    for (auto s : output) {
+        if (not first) {
+            std::cout << ", ";
+        } else {
+            first = false;
+        }
+        std::cout << s; }
+    std::cout << "]\n";
 
     return 0;
 }
