@@ -7,7 +7,7 @@
         const { instance } = await WebAssembly.instantiateStreaming(
         fetch("opus.wasm")
         );
-        instance.exports.memory.grow(1024);
+        instance.exports.memory.grow(100);
         instance.exports.__wasm_call_ctors();
 
         webasm = instance;
