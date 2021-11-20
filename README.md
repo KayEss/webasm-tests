@@ -1,5 +1,7 @@
 # Playing with freestanding webasm
 
+**This is only proof-of-concept stuff. Nothing here is suitable for real world production use, but it could be adapted to be so**
+
 Requires a good clang compiler. All tests were done using using clang-13.
 
 You may need some extra packages installed:
@@ -31,3 +33,7 @@ To look at the symbols produced (useful to make sure everything is as it should 
 ```bash
 wasm-objdump -x test1.wasm
 ```
+
+## OPUS example
+
+For something more adventurous there is an OPUS decoder. The [`./opus.sh`](./opus.sh) script will build the example code along with the bits of libopus and SoftFloat that are required. The file [`opus.html`](./opus.html) contains some numerical analysis of decoding a single test OPUS packet (again, look in the console log).
