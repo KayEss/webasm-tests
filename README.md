@@ -37,3 +37,5 @@ wasm-objdump -x test1.wasm
 ## OPUS example
 
 For something more adventurous there is an OPUS decoder. The [`./opus.sh`](./opus.sh) script will build the example code along with the bits of libopus and SoftFloat that are required. The file [`opus.html`](./opus.html) contains some numerical analysis of decoding a single test OPUS packet (again, look in the console log).
+
+The file [`opus_long_decode.html`](./opus_long_decode.html) contains a play button where you can hear the output from the decoder.
