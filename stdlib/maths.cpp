@@ -66,7 +66,14 @@ double exp(double const n) {
 
 
 double floor(double const v) {
-    return static_cast<int>(v);
+    if (v < 0) {
+        return static_cast<int64_t>(v - 1);
+    } else {
+        return static_cast<int64_t>(v);
+    }
+}
+
+
 }
 
 
