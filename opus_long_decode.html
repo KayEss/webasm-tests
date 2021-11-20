@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<script src="opus_input/1kHz.js"></script>
+<script src="opus_input/bg.js"></script>
 <script>
     var webasm;
-    var audioChunks = [];
-    var floatChucks = [];
+    var audioFileChunk = [];
+    var audioPlaybackChunk = [];
     async function init() {
         const { instance } = await WebAssembly.instantiateStreaming(
         fetch("opus.wasm")
@@ -27,9 +27,6 @@
         console.log(exp(1), exp(3.5), exp(-6.2));
         console.log(Math.exp(1), Math.exp(3.5), Math.exp(-6.2));
 
-
-
-
         let decoder = instance.exports.create_decoder();
         let ptr = instance.exports.malloc(packets.length);
         let out = instance.exports.malloc(960 * 4 * 2); // sizeof(float) == 4
@@ -42,14 +39,17 @@
             console.log(out, instance.exports.decode_float(decoder, ptr, packets[i].length, out, 960 * 2, 0));
 
             const samples = new Float32Array(instance.exports.memory.buffer, out, 960);
-            audioChunks.push(samples.slice(0))
+            audioFileChunk.push(samples.slice(0))
+            audioPlaybackChunk.push(...Array.from(samples))
             console.log(samples.slice(0));
         }
+        var decoding = document.getElementById("decoding");
+        decoding.innerText = "Decode done"
     }
 
     function create_download_file() {
         var a = document.getElementById("a");
-        audioBlob = new Blob(audioChunks);
+        audioBlob = new Blob(audioFileChunk);
         const audioUrl = URL.createObjectURL(audioBlob);
         a.href = audioUrl
         a.download = "test_opus";
@@ -60,16 +60,12 @@
     audioCtx.sampleRate = 48000
 
     function play() {
-        var audioBuffer = [];
-        for (let x = 0; x< audioChunks.length; x++) {
-            audioBuffer = audioBuffer.concat(Array.from(audioChunks[x]))
-        }
-        let frameCount = audioBuffer.length / 2;
+        let frameCount = audioPlaybackChunk.length / 2;
         let myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
         for (let channel = 0; channel < 2; channel++) {
             let nowBuffering = myArrayBuffer.getChannelData(channel);
             for (let i = 0; i < frameCount; i++) {
-                nowBuffering[i] = audioBuffer[i *2 + channel]
+                nowBuffering[i] = audioPlaybackChunk[i *2 + channel]
             }
         }
 
@@ -81,6 +77,7 @@
 
     init();
 </script>
+<h1 id="decoding">Decoding.....</h1>
 <a href="" id="a">click here to download your file</a>
 <button onclick="create_download_file()">Create file</button>
 <button onclick="play()">PLAY SOUND</button>
