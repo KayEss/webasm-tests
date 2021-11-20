@@ -150,7 +150,7 @@ do {
         -nostdlib -ffreestanding -fno-exceptions \
         -O3 \
         -DOPUS_BUILD=1 \
-        -DUSE_ALLOCA=1 \
+        -DVAR_ARRAYS=1 \
         -DHAVE_LRINT \
         -DHAVE_LRINTF \
         -I/usr/lib/llvm-13/include/c++/v1/ \
