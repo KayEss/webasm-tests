@@ -22,6 +22,7 @@ double cos(double const r) {
      */
     unsigned k = 1;
     double step = -r * r / 2.0, approx = 1.0, best = approx + step;
+    /// TODO: No termination g'tee?
     while (best != approx) {
         approx = best;
         ++k;
@@ -56,6 +57,7 @@ double exp(double const n) {
         }
     }
 
+    /// TODO Dynamically choose the depth into the tailor series
     double const er = 1 + error + (error * error) / 2 +
         (error * error * error) / 6 +
         (error * error * error * error) / 24 +
