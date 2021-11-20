@@ -12,6 +12,13 @@ int abs(int n) {
         return n;
     }
 }
+double fabs(double d) {
+    if (d < 0.0) {
+        return -d;
+    } else {
+        return d;
+    }
+}
 
 
 double cos(double const r) {
@@ -72,18 +79,6 @@ double floor(double const v) {
         return static_cast<int64_t>(v - 1);
     } else {
         return static_cast<int64_t>(v);
-    }
-}
-
-
-}
-
-
-double fabs(double d) {
-    if (d < 0.0) {
-        return -d;
-    } else {
-        return d;
     }
 }
 
