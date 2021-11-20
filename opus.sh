@@ -148,7 +148,8 @@ do {
     clang \
         --target=wasm32 -emit-llvm -c \
         -nostdlib -ffreestanding -fno-exceptions \
-        -O3 \
+        -O3 -ffast-math \
+        -DFLOAT_APPROX \
         -DOPUS_BUILD=1 \
         -DVAR_ARRAYS=1 \
         -DHAVE_LRINT \
@@ -170,7 +171,8 @@ clang++ \
     --target=wasm32 \
     -nostdlib -ffreestanding -fno-exceptions \
     --std=c++20 \
-    -O3 \
+    -O3 -ffast-math \
+    -DFLOAT_APPROX \
     -D_LIBCPP_HAS_NO_THREADS \
     -I/usr/lib/llvm-13/include/c++/v1/ \
     -I/usr/include \
