@@ -1,0 +1,7 @@
+atexit.cpp
+malloc.cpp
+maths.cpp
+memcpy.cpp
+memmove.cpp
+memset.cpp
+new.cpp

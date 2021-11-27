@@ -5,6 +5,7 @@
 Requires a good clang compiler. All tests were done using using clang-13.
 
 You may need some extra packages installed:
+* `clang-13` -- for the compiler
 * `libc6-dev-i386` -- for some 32 bit stuff the compiler wants
 
 I also needed to soft link the linker in my `~/bin` folder with:
@@ -14,10 +15,11 @@ ln -s /usr/bin/wasm-ld-13 wasm-ld
 
 ## Compiling and running
 
-To compile a test run its `.sh` file:
+To compile all libraries and examples use the configure script followed by Ninja:
 
 ```bash
-./test1.sh
+./config-build
+ninja -C build.tmp
 ```
 
 To serve the pages you can use the built in Python web server:

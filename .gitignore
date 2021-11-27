@@ -1,4 +1,2 @@
-*.bc
-*.wasm
-
-opus
+/__pycache__/
+/build.tmp/

@@ -3,9 +3,7 @@
 <script>
   var webasm;
   async function init() {
-    const { instance } = await WebAssembly.instantiateStreaming(
-      fetch("test1.wasm")
-    );
+    const { instance } = await WebAssembly.instantiateStreaming(fetch("test1.wasm"));
     webasm = instance;
     console.log(instance);
     console.log(instance.exports.add(4, 1));
