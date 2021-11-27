@@ -1,4 +1,7 @@
+#include <numbers>
+
 #include  <math.h>
+
 extern "C" {
 #include <platform.h>
 #include <softfloat.h>
@@ -21,12 +24,13 @@ double fabs(double d) {
 }
 
 
-double cos(double const r) {
+double cos(double const ar) {
     /**
      * Tailor series expansion
      *
      * cos x = 1 - x^2/2! + x^4/4! - x^6/6! + ...
      */
+    double const r = f64_rem(ar, 2 * std::numbers::pi);
     unsigned k = 1;
     double step = -r * r / 2.0, approx = 1.0, best = approx + step;
     /// TODO: No termination g'tee?
@@ -41,7 +45,7 @@ double cos(double const r) {
 
 
 double exp(double const n) {
-    constexpr double e = 2.7182818284590;
+    constexpr double e = std::numbers::e;
 
     int64_t nearest = n;
     double error = n - nearest;

@@ -1,10 +1,14 @@
 SoftFloat/source/8086/s_propagateNaNF64UI.c
 SoftFloat/source/8086/softfloat_raiseFlags.c
+SoftFloat/source/f64_rem.c
 SoftFloat/source/f64_sqrt.c
+SoftFloat/source/s_approxRecip_1Ks.c
+SoftFloat/source/s_approxRecip32_1.c
 SoftFloat/source/s_approxRecipSqrt_1Ks.c
 SoftFloat/source/s_approxRecipSqrt32_1.c
 SoftFloat/source/s_countLeadingZeros8.c
 SoftFloat/source/s_countLeadingZeros64.c
+SoftFloat/source/s_normRoundPackToF64.c
 SoftFloat/source/s_normSubnormalF64Sig.c
 SoftFloat/source/s_roundPackToF64.c
 SoftFloat/source/s_shiftRightJam64.c
