@@ -29,6 +29,27 @@ def library(writer, libname, compiler, opts, sources_file, src_prefix):
     generator_source.append("../" + sources_file)
 
 targets = []
+def test(writer, name, libs, exports):
+    output = "../tests/" + name + ".wasm"
+    linker = "link.test." + name
+    bc = []
+    for l in libs:
+        bc += bitcode[l]
+    writer.rule(linker,
+            ["clang++",
+                "$flags",
+                "-Wl,-error-limit=0",
+                "-Wl,--no-entry",
+                "-Wl,--export=__wasm_call_ctors"] +
+            ["-Wl,--export=" + e for e in exports] +
+            ["-Wl,--lto-O3",
+                "-Wl,-z,stack-size={0}".format(8 * 1024 * 1024), "$in", "-o $out"],
+            description="linking $out")
+    writer.build(output, linker, bc)
+    writer.build("tests/" + name, "test", ["../tests/" + name + ".js", output])
+    targets.append("tests/" + name)
+
+
 def example(writer, name, libs, exports):
     writer.rule("bc.example." + name,
             ["$cxx", "-MD", "-MF", "$out.d", "$bc"] +
@@ -107,6 +128,11 @@ with open("build.tmp/build.ninja", 'wt') as ninja:
             "-I../libs/opus/silk",
             "-I../libs/opus/silk/float"],
         "libs/opus.sources", "../libs/opus/")
+
+    # tests
+    writer.rule("test", ["node", "$in"],
+        description="testing $out")
+    test(writer, "maths", ["softfloat", "stdlib"], ["cos", "exp", "sqrt"])
 
     # examples
     example(writer, "opus",
