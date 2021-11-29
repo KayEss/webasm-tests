@@ -28,6 +28,7 @@ def library(writer, libname, compiler, opts, sources_file, src_prefix):
             bitcode[libname].append(bc)
     generator_source.append("../" + sources_file)
 
+
 targets = []
 def test(writer, name, libs, exports):
     output = "../tests/" + name + ".wasm"
@@ -130,7 +131,7 @@ with open("build.tmp/build.ninja", 'wt') as ninja:
         "libs/opus.sources", "../libs/opus/")
 
     # tests
-    writer.rule("test", ["node", "$in"],
+    writer.rule("test", ["node", "$in", "&&", "touch", "$out"],
         description="testing $out")
     test(writer, "maths", ["softfloat", "stdlib"], ["cos", "exp", "sqrt"])
 
